@@ -79,7 +79,7 @@ module.exports = io => {
             else { patchForGame.grid[updateLoc] = 2;   patchForGame.turn = 1}
           }
           console.log('winner',gameLogic.hasWon(patchForGame.grid),'change',patchForGame.grid[updateLoc],"HERE")
-          if(gameLogic.hasWon(patchForGame.grid != null)){
+          if(gameLogic.hasWon(patchForGame.grid) != 3){
             patchForGame.winnerId = patchForGame.players[(gameLogic.hasWon(patchForGame.grid))].userId
             io.emit('action', {
               type: 'winner winner',
