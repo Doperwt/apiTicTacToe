@@ -20,7 +20,7 @@ const gameLogic = {
       if(b[0]===b[1] && b[0]===b[2]){
         if( gameLogic.endGame(b[0])){
           winner = b[0]-1
-          console.log('winner',winner,'endgame:',gameLogic.endGame(b[0]))
+          // console.log('winner',winner,'endgame:',gameLogic.endGame(b[0]))
         }
       }
     })

@@ -72,19 +72,22 @@ module.exports = io => {
         .then((game) => {
           if (!game) { return next() }
           let patchForGame = JSON.parse(JSON.stringify(game))
-          console.log(patchForGame.players[0].userId,patchForGame.players[1].userId,req.account._id,'player1,player2,currentuser')
-          console.log('check player',gameLogic.checkPlayer(req.account._id, patchForGame.players[patchForGame.turn].userId),'check loc',gameLogic.isTaken(patchForGame.grid,updateLoc),"OVER HERE")
-          if(gameLogic.isTaken(patchForGame.grid,updateLoc)&&gameLogic.checkPlayer(req.account._id, patchForGame.players[patchForGame.turn].userId)){
-            if (patchForGame.turn === 1 ){ patchForGame.grid[updateLoc] = 1; patchForGame.turn = 0 }
-            else { patchForGame.grid[updateLoc] = 2;   patchForGame.turn = 1}
+          const { grid,players,turn } = patchForGame
+          // console.log(patchForGame.players[0].userId,patchForGame.players[1].userId,req.account._id,'player1,player2,currentuser')
+          // console.log('check player',gameLogic.checkPlayer(req.account._id, patchForGame.players[patchForGame.turn].userId),'check loc',gameLogic.isTaken(patchForGame.grid,updateLoc),"OVER HERE")
+          if(gameLogic.isTaken(grid,updateLoc)&&
+          gameLogic.checkPlayer(req.account._id, players[turn].userId))
+          {
+            if (turn === 1 ){ grid[updateLoc] = 1; patchForGame.turn = 0 }
+            else { grid[updateLoc] = 2;   patchForGame.turn = 1}
           }
-          console.log('winner',gameLogic.hasWon(patchForGame.grid),'change',patchForGame.grid[updateLoc],"HERE")
-          if(gameLogic.hasWon(patchForGame.grid) != 3){
-            patchForGame.winnerId = patchForGame.players[(gameLogic.hasWon(patchForGame.grid))].userId
-            io.emit('action', {
-              type: 'winner winner',
-              payload: patchForGame.winnerId,
-            })
+          // console.log('winner',gameLogic.hasWon(patchForGame.grid),'change',patchForGame.grid[updateLoc],"HERE")
+          if(gameLogic.hasWon(grid) != 3){
+            patchForGame.winnerId = players[(gameLogic.hasWon(grid))].userId
+            // io.emit('action', {
+            //   type: 'winner winner',
+            //   payload: patchForGame.winnerId,
+            // })
           }
           const updatedGame = { ...game, ...patchForGame}
 
